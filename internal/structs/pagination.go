@@ -1,6 +1,6 @@
 package structs
 
 type Pagination struct {
-	PageNum int `json:"pageNum"`
-	Limit   int `json:"limit"`
+	Page  int `json:"page"`
+	Limit int `json:"limit"`
 }

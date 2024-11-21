@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strconv"
 )
 
 type SongHandler struct {
@@ -66,12 +67,6 @@ func (h *SongHandler) CreateSong(c echo.Context) error {
 		return responses.InternalServerErrorResponse(c, fmt.Errorf("Validate data error: %w", err))
 	}
 
-	//responseDateFormat := "02.01.2006"
-	//parsedDate, err := time.Parse(responseDateFormat, additionalInfo.ReleaseDate)
-	//if err != nil {
-	//	return responses.InternalServerErrorResponse(c, fmt.Errorf("Parse date error: %w", err))
-	//}
-	//input.ReleaseDate = parsedDate.Format("2006-01-02")
 	input.ReleaseDate = additionalInfo.ReleaseDate
 	input.Text = additionalInfo.Text
 	input.Link = additionalInfo.Link
@@ -97,10 +92,22 @@ func (h *SongHandler) DeleteSong(c echo.Context) error {
 
 func (h *SongHandler) GetSong(c echo.Context) error {
 	parsedUUID, err := uuid.Parse(c.Param("id"))
+	pageParam := c.QueryParam("page")
+	limitParam := c.QueryParam("limit")
 	if err != nil {
 		return responses.BadRequestResponse(c, err)
 	}
-	result, err := h.Repo.GetByIdWithPagination(parsedUUID, structs.Pagination{})
+	pagination := structs.Pagination{}
+	page, err := strconv.Atoi(pageParam)
+	if err == nil {
+		pagination.Page = page
+	}
+
+	limit, err := strconv.Atoi(limitParam)
+	if err == nil {
+		pagination.Limit = limit
+	}
+	result, err := h.Repo.GetByIdWithPagination(parsedUUID, pagination)
 	if err != nil {
 		return responses.InternalServerErrorResponse(c, err)
 	}

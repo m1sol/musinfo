@@ -4,7 +4,7 @@ CREATE TABLE songs (
                       group_name VARCHAR(100) NOT NULL,
                       song VARCHAR(100) NOT NULL,
                       release_date DATE NOT NULL,
-                      text TEXT NOT NULL,
+                      song_text TEXT NOT NULL,
                       link VARCHAR(100) NOT NULL,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
