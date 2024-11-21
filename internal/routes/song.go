@@ -14,7 +14,7 @@ func Song(e *echo.Echo) {
 	handler := handlers.NewSongHandler(*repo)
 
 	e.POST("/song", handler.CreateSong)
-	//e.PUT("/song/:id", handler.Update)
+	e.PUT("/song/:id", handler.UpdateSong)
 	e.GET("/song/:id", handler.GetSong)
 	e.GET("/song", handler.ListSongs)
 	e.DELETE("/song/:id", handler.DeleteSong)

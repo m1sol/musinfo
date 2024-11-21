@@ -1,4 +1,4 @@
-package entities
+package models
 
 type Song struct {
 	Group       string `json:"group"`
