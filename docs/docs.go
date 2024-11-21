@@ -127,7 +127,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Updated song ID",
                         "schema": {
                             "allOf": [
                                 {
@@ -137,7 +137,7 @@ const docTemplate = `{
                                     "type": "object",
                                     "properties": {
                                         "data": {
-                                            "$ref": "#/definitions/models.Song"
+                                            "type": "string"
                                         }
                                     }
                                 }
@@ -245,23 +245,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "Song updated successfully",
-                        "schema": {
-                            "allOf": [
-                                {
-                                    "$ref": "#/definitions/responses.Response"
-                                },
-                                {
-                                    "type": "object",
-                                    "properties": {
-                                        "data": {
-                                            "$ref": "#/definitions/models.Song"
-                                        }
-                                    }
-                                }
-                            ]
-                        }
+                    "204": {
+                        "description": "Song updated successfully"
                     },
                     "404": {
                         "description": "Song not found",
@@ -294,10 +279,7 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "204": {
-                        "description": "Song deleted successfully",
-                        "schema": {
-                            "$ref": "#/definitions/responses.Response"
-                        }
+                        "description": "Song deleted successfully"
                     },
                     "404": {
                         "description": "Song not found",

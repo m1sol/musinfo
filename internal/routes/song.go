@@ -29,7 +29,7 @@ func Song(e *echo.Echo) {
 // @Accept json
 // @Produce json
 // @Param song body models.CreateSong true "Song details"
-// @Success 200 {object} responses.Response{data=models.Song}
+// @Success 200 {object} responses.Response{data=string} "Updated song ID
 // @Failure 500 {object} responses.Response
 func createSongDocs() {}
 
@@ -41,7 +41,7 @@ func createSongDocs() {}
 // @Produce json
 // @Param id path string true "Song ID"
 // @Param song body models.Song true "Updated song details"
-// @Success 200 {object} responses.Response{data=models.Song} "Song updated successfully"
+// @Success 204 "Song updated successfully"
 // @Failure 404 {object} responses.Response "Song not found"
 func updateSongDocs() {}
 
@@ -82,6 +82,6 @@ func listSongDocs() {}
 // @Accept json
 // @Produce json
 // @Param id path string true "Song ID"
-// @Success 204 {object} responses.Response "Song deleted successfully"
+// @Success 204 "Song deleted successfully"
 // @Failure 404 {object} responses.Response "Song not found"
 func deleteSongDocs() {}

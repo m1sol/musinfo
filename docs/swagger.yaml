@@ -125,13 +125,13 @@ paths:
       - application/json
       responses:
         "200":
-          description: OK
+          description: Updated song ID
           schema:
             allOf:
             - $ref: '#/definitions/responses.Response'
             - properties:
                 data:
-                  $ref: '#/definitions/models.Song'
+                  type: string
               type: object
         "500":
           description: Internal Server Error
@@ -156,8 +156,6 @@ paths:
       responses:
         "204":
           description: Song deleted successfully
-          schema:
-            $ref: '#/definitions/responses.Response'
         "404":
           description: Song not found
           schema:
@@ -221,15 +219,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
+        "204":
           description: Song updated successfully
-          schema:
-            allOf:
-            - $ref: '#/definitions/responses.Response'
-            - properties:
-                data:
-                  $ref: '#/definitions/models.Song'
-              type: object
         "404":
           description: Song not found
           schema:
