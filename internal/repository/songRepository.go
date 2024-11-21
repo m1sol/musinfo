@@ -40,9 +40,9 @@ func (s *SongRepository) Create(songInfo models.Song) (uuid.UUID, error) {
 	return parsedUUID, nil
 }
 
-func (s *SongRepository) List(filter models.Song, pagination models.Pagination, text string) ([]models.Song, error) {
-	var songs []models.Song
-	query := `SELECT group_name, song, release_date, song_text, link FROM songs `
+func (s *SongRepository) List(filter models.Song, pagination models.Pagination, text string) ([]models.OutputSong, error) {
+	var songs []models.OutputSong
+	query := `SELECT id, group_name, song, release_date, song_text, link, created_at, updated_at FROM songs `
 	fieldNames, values := generateQueryFields(filter)
 	if len(fieldNames) > 0 {
 		query += " WHERE " + strings.Join(fieldNames, " AND ")
@@ -66,17 +66,20 @@ func (s *SongRepository) List(filter models.Song, pagination models.Pagination, 
 	}
 	rows, err := db.DB.Query(query, values...)
 	if err != nil {
-		return []models.Song{}, fmt.Errorf("Error in query: %s . Detail: %w", query, err)
+		return []models.OutputSong{}, fmt.Errorf("Error in query: %s . Detail: %w", query, err)
 	}
 	defer rows.Close()
 	for rows.Next() {
-		var song models.Song
+		var song models.OutputSong
 		err := rows.Scan(
+			&song.ID,
 			&song.Group,
 			&song.Song,
 			&song.ReleaseDate,
 			&song.Text,
 			&song.Link,
+			&song.CreatedAt,
+			&song.UpdatedAt,
 		)
 		if err != nil {
 			return nil, fmt.Errorf("failed to scan row: %w", err)

@@ -1,0 +1,240 @@
+definitions:
+  models.CreateSong:
+    properties:
+      group:
+        type: string
+      song:
+        type: string
+    type: object
+  models.OutputSong:
+    properties:
+      createdAt:
+        type: string
+      group:
+        type: string
+      id:
+        type: string
+      link:
+        type: string
+      releaseDate:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+      updatedAt:
+        type: string
+    required:
+    - link
+    - releaseDate
+    - text
+    type: object
+  models.Song:
+    properties:
+      group:
+        type: string
+      link:
+        type: string
+      releaseDate:
+        type: string
+      song:
+        type: string
+      text:
+        type: string
+    required:
+    - link
+    - releaseDate
+    - text
+    type: object
+  responses.Response:
+    properties:
+      data: {}
+      status:
+        type: integer
+    type: object
+info:
+  contact: {}
+paths:
+  /song:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all songs
+      parameters:
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      - description: Song Name
+        in: query
+        name: song
+        type: string
+      - description: Group Name
+        in: query
+        name: group
+        type: string
+      - description: Release Date (DD.MM.YYYY)
+        in: query
+        name: releaseDate
+        type: string
+      - description: Link
+        in: query
+        name: link
+        type: string
+      - description: Text (part of song)
+        in: query
+        name: text
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of songs
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.OutputSong'
+                  type: array
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: List all songs
+      tags:
+      - songs
+    post:
+      consumes:
+      - application/json
+      description: Добавление новой песни (название, группа, )
+      parameters:
+      - description: Song details
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateSong'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Song'
+              type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Добавление новой песни
+      tags:
+      - songs
+  /song/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Remove a song from the system by ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: Song deleted successfully
+          schema:
+            $ref: '#/definitions/responses.Response'
+        "404":
+          description: Song not found
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Delete a song by ID
+      tags:
+      - songs
+    get:
+      consumes:
+      - application/json
+      description: Retrieve song details by ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Page
+        in: query
+        name: page
+        type: integer
+      - description: Limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Song retrieved successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.OutputSong'
+              type: object
+        "404":
+          description: Song not found
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get a song by ID
+      tags:
+      - songs
+    put:
+      consumes:
+      - application/json
+      description: Update song details by ID
+      parameters:
+      - description: Song ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated song details
+        in: body
+        name: song
+        required: true
+        schema:
+          $ref: '#/definitions/models.Song'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Song updated successfully
+          schema:
+            allOf:
+            - $ref: '#/definitions/responses.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.Song'
+              type: object
+        "404":
+          description: Song not found
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Update an existing song
+      tags:
+      - songs
+swagger: "2.0"
